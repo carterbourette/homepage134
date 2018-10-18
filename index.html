@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>the 134 Homepage</title>
+    <meta charset="utf-8">
+
+    <!-- Tab icon -->
+    <link rel="shortcut icon" href="otherImages//homeIcon.ico">
+
+    <!-- Weather icons -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+    <link rel="stylesheet" href="weatherIcons/weather-icons.css">
+    <link rel="stylesheet" href="weatherIcons/weather-icons-wind.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Bangers|Gruppo|Nixie+One|Noto+Serif|Nova+Flat|Poiret+One|Shrikhand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playball" rel="stylesheet">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
+
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+    <style media="screen">
+      [v-cloak] { display:none; }
+
+      .box {
+        position: relative;
+        border: 1px solid;
+        padding: 1.3em;
+        margin: 1em;
+      }
+
+      .linkColourChange {
+        color: white;
+        text-decoration: none;
+       }
+
+      .date-time{
+        -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+           -khtml-user-select: none; /* Konqueror HTML */
+             -moz-user-select: none; /* Firefox */
+              -ms-user-select: none; /* Internet Explorer/Edge */
+                  user-select: none;
+      }
+
+      .clockSize {
+        font-size: 800%;
+        color: rgba(0,0,0,8);
+
+        text-shadow: 0 0 0.5px #fff, 0 0 0.5px #fff, 0 0 0.5px #fff
+      }
+
+      .dateSize {
+        font-size: 200%;
+        color: rgba(0,0,0,8);
+        margin-top: -1em;
+      }
+
+      .clock {
+        text-align: center;
+        font-family: 'Playball', cursive;
+      }
+
+      .favButtons {
+        width:  40px;
+        height: 40px;
+      }
+
+      .dashboard {
+        text-align: center;
+        font-family: 'Gruppo', cursive;
+      }
+
+      .forecastStyle {
+        background: rgba(200,200,200,.95);
+        /* background: transparent url('otherImages//weatherBoxBackground_1.jpg') no-repeat 0 0; */
+        width: 55px;
+
+        margin: 0 -50%;
+      }
+
+      .forecastIcons {
+        position: absolute;
+        top: 17%;
+        left: 3%;
+
+        font-size: 16px;
+        opacity: .90;
+      }
+
+      .busNumIconStyle {
+        height: 35px;
+        width: 35px;
+
+        border-radius: 50%;
+
+        font-size: 140%;
+
+        position:absolute;
+        top: 35%;
+        left: 2%;
+      }
+
+      .homeworkStyle {
+        height: 50px;
+        width: 55px;
+
+        margin: 0;
+        margin-top: 80%;
+        margin-left: -50%;
+      }
+
+      .prettyBox:not(:empty) {
+        width: 200px;
+        background-color: white;
+        opacity: 1;
+
+        border-radius: 45px;
+        border: 2px solid black;
+        padding: 10px;
+      }
+
+      .tooltip .tooltiptext{
+        visibility: hidden;
+
+
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -100px;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+      }
+
+      .top-left {
+        position:absolute;
+        top: -1px;
+        left: 5px;
+      }
+
+      .top-center {
+        position: absolute;
+        top: -1px;
+        left: 40%;
+      }
+
+      .top-right {
+        position:absolute;
+        top: -1px;
+        right: 5px;
+      }
+
+      .mid-right {
+        position: absolute;
+        top: 15px;
+        right: 5px;
+      }
+
+      .bottom-left {
+        position:absolute;
+        bottom: 1;
+        right: -0.5;
+      }
+
+      .bottom-center {
+        position:absolute;
+        bottom: 0px;
+        left: 30%;
+      }
+
+      .bottom-right {
+        position:absolute;
+        bottom: 1;
+        right: -0.5;
+      }
+
+      blink {
+          -webkit-animation: 0.9s linear infinite condemned_blink_effect; // for android
+          animation: 0.9s linear infinite condemned_blink_effect;
+      }
+      @-webkit-keyframes condemned_blink_effect { // for android
+          0% {
+              visibility: hidden;
+          }
+          50% {
+              visibility: hidden;
+          }
+          100% {
+              visibility: visible;
+          }
+      }
+      @keyframes condemned_blink_effect {
+          0% {
+              visibility: hidden;
+          }
+          50% {
+              visibility: hidden;
+          }
+          100% {
+              visibility: visible;
+          }
+      }
+    </style>
+
+    <!-- Google maps API KEy: AIzaSyAuZODWQu06M9hC-sGrhazBKCrLIIj9fzI -->
+  </head>
+  <body>
+    <div id="app">
+      <div class="row">
+        <br><br><br>
+        <div class="col s10 l6">
+          <!--Time Div-->
+          <div class="date-time">
+            <!--Time Row-->
+            <div class="clock">
+              <div class="row">
+                <div class="col s12">
+                  <br>
+                  <!-- The Vue instance is attached to this div -->
+                  <div>
+                    <div>
+                      <!-- Reference the variable currtime in Vue Instance -->
+                      <em class="clockSize" v-cloak>{{currhour}}<blink>:</blink>{{currmin}}&nbsp;</em>
+                    </div>
+                    <div>
+                      <!-- Reference the variable currdate in Vue Instance -->
+                      <p class="dateSize" v-cloak v-text="currdate">&nbsp;</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br><br>
+
+          <!--Browser Card-->
+          <div class="card" style="margin:0 auto; width:420px; background: rgba(240,240,240,0.5);">
+            <div class="card-content">
+              <!--Google basic search bar-->
+              <form method="get" action="http://www.google.com/search">
+                <div class="input-field">
+                  <i class="material-icons prefix">search</i>
+                  <input id="icon_prefix" name="q" placeholder="Search Google" type="text">
+                  <label for="icon_prefix"></label>
+                </div>
+              </form>
+
+              <!--Favourite tabs Row-->
+              <div class="row">
+                <div class="col s2 offset-s1 center-align">
+                  <a href="https://www.facebook.com/messages/t/1257203164296324"><img src="favouritesIcons//facebook.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://www.reddit.com/"><img src="favouritesIcons//Reddit-The-Official-App-Icon.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://easyweb.td.com/waw/idp/login.htm?execution=e1s1"><img src="favouritesIcons//TD-bank-icon.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://www.youtube.com/feed/subscriptions"><img src="favouritesIcons//youtube.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://www.netflix.com/browse"><img src="favouritesIcons//netflix.png" class="favButtons"></a>
+                </div>
+              </div>
+              <!--Favourite tabs Row2-->
+              <div class="row">
+                <div class="col s2 center-align offset-s1">
+                  <a href="https://github.com/"><img src="favouritesIcons//git.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://drive.google.com/drive/my-drive"><img src="favouritesIcons//googleDrive.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://www.google.ca/maps?hl=en&tab=wl"><img src="favouritesIcons//maps.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://outlook.office.com/owa/?realm=uoguelph.ca">  <img src="favouritesIcons//gmail.png" class="favButtons"></a>
+                </div>
+                <div class="col s2 center-align">
+                  <a href="https://courselink.uoguelph.ca/d2l/home"><img src="favouritesIcons//guelph.jpeg" class="favButtons"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s4 offset-s1">
+          <!--Dashboard Card-->
+          <div class="card dashboard" style="margin: auto 0; width: 440px; background: rgba(240,240,240,0.8);">
+            <div class="card-content">
+              <div id="temperatureDisplay">
+                <!--Current tempature-->
+                <div class="col s6 push-s1" id="currentTemp" style="font-size: 450%;">&nbsp; </div>
+
+                <!--Weather Icon-->
+                <div class="col s6 pull-s1 center-align">
+                  <br>
+                  <i id="weatherIcon" style="font-size: 425%;">&nbsp; </i>
+                </div>
+
+                <!--Forecast Description row-->
+                <div class="row">
+                  <div class="col s12" id="currentTempText" style="font-family: 'Arima Madurai', cursive;">&nbsp; </div>
+                  <div class="col s12" id="currentTempRange">&nbsp; </div>
+                  <div class="col s12" id="currentLocation" contenteditable="true">&nbsp; </div>
+                </div>
+              </div>
+
+              <!--Weekly Weather Forecast box-->
+              <div class="box" id="forecastDisplay" style="background: url('otherImages//weatherBackground.jpg');">
+                <div class="row" style="margin: 0;">
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day0Icon"></i>
+                      <div class="top-right" id="day0High"></div>
+                      <div class="mid-right" id="day0Low"></div><br>
+                      <div class="bottom-center" id="day0Date" style = "font-size: 80%;"></div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day1Icon"></i>
+                      <span class="top-right" id="day1High"></span>
+                      <span class="mid-right" id="day1Low"></span><br>
+                      <span class="bottom-center" id="day1Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day2Icon"></i>
+                      <span class="top-right" id="day2High"></span>
+                      <span class="mid-right" id="day2Low"></span><br>
+                      <span class="bottom-center" id="day2Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day3Icon"></i>
+                      <span class="top-right" id="day3High"></span>
+                      <span class="mid-right" id="day3Low"></span><br>
+                      <span class="bottom-center" id="day3Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day4Icon"></i>
+                      <span class="top-right" id="day4High"></span>
+                      <span class="mid-right" id="day4Low"></span><br>
+                      <span class="bottom-center" id="day4Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box forecastStyle">
+                      <i class="forecastIcons " id="day5Icon"></i>
+                      <span class="top-right" id="day5High"></span>
+                      <span class="mid-right" id="day5Low"></span><br>
+                      <span class="bottom-center" id="day5Date" style = "font-size: 80%;"></span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!--Bus Schedule box-->
+              <div class="box" id="mapsDisplay" style="background: url('otherImages//homeToSchool_410x120.jpg');">
+                <div class="row" style="margin: 0;">
+                  <!-- Different icon type to display, be default each is hidden -->
+                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="busNumIcon" style="display: none;"></a>
+                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="carIcon" style="display: none;"><img  src="otherImages//carLogo2_1.png"></a>
+                  <a href="maps.html" target="_blank" class="busNumIconStyle linkColourChange" id="walkIcon" style="display: none;"><img  src="otherImages//walking_2.jpg"></a>
+
+                  <!-- Departure/Arrival time text spaces -->
+                  <div class="col s7" style="font-size:130%;">
+                    <b>Leave: </b>
+                    <b id="busLeaveTime"></b>
+                    <br>
+                    <b>Arrive: </b>
+                    <b id="busArriveTime"></b>
+                  </div>
+
+                  <!-- Origin/Destination text spaces. Origin implements tooltip to use hover over text boxes to display full adress -->
+                  <div class="col s5" style="font-size:130%">
+                    <span class="tooltip">
+                      <b>Start: <b>
+                      <b id="busOrigin"></b>
+                      <span class="tooltiptext prettyBox shadow1" id="originFullText"></span>
+                    </span>
+
+                    <br>
+                    <b>End: </b>
+                    <b id="busDestination"></b>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Homework/Calendar Box -->
+              <div class="box" style="background: url('otherImages//calendarBackground.jpg');">
+                <!-- Allows for 6 items to be displayed for today -->
+                <span class="top-left">Today:</span>
+                <div style="fontSize: 86%;">
+                  <span class="col s6" id="hwday0Item0"></span> <span class="col s6" id="hwday0Item1"></span>
+                  <span class="col s6" id="hwday0Item2"></span> <span class="col s6" id="hwday0Item3"></span>
+                  <span class="col s6" id="hwday0Item4"></span> <span class="col s6" id="hwday0Item5"></span>
+                </div>
+
+                <!-- Displays 6 boxes to show homwork count for the next 6 days -->
+                <div class="row" style="margin: 0;">
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day1Count" style="fontSize:150%;"></span>
+                      <span class="bottom-center" id="hwDay1Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day1Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                   <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day2Count" style="fontSize:150%;"> </span>
+                      <span class="bottom-center" id="hwDay2Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day2Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day3Count" style="fontSize:150%;"></span>
+                      <span class="bottom-center" id="hwDay3Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day3Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day4Count" style="fontSize:150%;"> </span>
+                      <span class="bottom-center" id="hwDay4Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day4Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day5Count" style="fontSize:150%;"> </span>
+                      <span class="bottom-center" id="hwDay5Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day5Calendar">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s2">
+                    <div class="box homeworkStyle tooltip">
+                      <span class="top-center" id="day6Count" style="fontSize:150%;"> </span>
+                      <span class="bottom-center" id="hwDay6Date" style="fontSize:80%;"></span>
+
+                      <div class="tooltiptext prettyBox" id="day6Calendar">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<!--Clock Script-->
+<script src="vue.min.js"></script>
+<script src="moment.js" charset="utf-8"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+  new Vue({
+    /* Vue will be attached to this ID */
+    el: '#app',
+    /* variables are stored in data */
+    data: {
+        currhour: '', currmin: '', currdate: ''
+    },
+    /* Methods are defined in here */
+    methods: {
+      get_time() {
+        /* Get the current date from moment.js.  learn more about formatting at: https://momentjs.com/docs/#/displaying/format/ */
+        var split = moment().format("dddd, MMMM Do YYYY_h_mm a").split('_')
+
+        /* Set instance variables */
+    		this.currdate = split[0]
+    		this.currhour = split[1]
+    		this.currmin  = split[2]
+      },
+    },
+
+    /* This is called when the Vue instance is mounted to #app
+        similar to a constructor method */
+    mounted() {
+        /* Call get_time on via timer, every second */
+        this.get_time()
+        this.interval = setInterval(this.get_time, 1000)
+    },
+    beforeDestroy() {
+        clearInterval(this.interval)
+    }
+  });
+</script>
+<!-- JQuery download link (Need to use for following script) -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+<!-- Ajax script to run 'clientSide.php' and retrieve a random background -->
+<script>
+  document.body.style.background = "url(\'" + localStorage.getItem("nextBackground") + "\')";
+  document.body.style.backgroundSize = "cover";
+
+  $(document).ready(function() {
+    $.ajax({
+      url:'clientSide.php',
+      method:'POST',
+      success:function(data){
+        try {
+          console.log("Background: " + data);
+          if (String(data) == "backgrounds/" || data == "")
+            throw "backgrounds/earthporn24.png";
+
+          // Set the new "next" background
+          localStorage.setItem("nextBackground", data);
+        } catch(err) {
+          document.body.style.background = "#f3f3f3 url(\'" + err + "\') no-repeat fixed center";
+        }
+     }
+   });
+  });
+</script>
+
+<!-- Get weekly weather info -->
+<script>
+  var curLong, curLat, curLocation, customLocation = "";
+
+  getLocation();
+  displayHwCalendar();
+
+  var input = document.getElementById("currentLocation");
+  input.addEventListener("keyup", function(event) {
+      event.preventDefault();
+      if (event.keyCode === 13) {
+          customLocation = document.getElementById("currentLocation").innerHTML;
+          customLocation = customLocation.slice(customLocation.indexOf('>') + 2, customLocation.length);
+          customLocation = customLocation.slice(0, customLocation.indexOf('<'));
+
+          displayWeather();
+      }
+  });
+
+  function getLocation() {
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    function success(pos) {
+      var crd = pos.coords;
+
+      curLat  = crd.latitude;
+      curLong = crd.longitude;
+      curLocation = curLat + "," + curLong;
+      console.log("longLat", crd.latitude + "," + crd.longitude);
+      console.log("Accuracy: " + crd.accuracy);
+
+      if (crd.accuracy > 100)
+        document.getElementById('originFullText').innerHTML = crd.accuracy + ": ";
+
+      displayWeather();
+
+      displayBusSchedule();
+      // window.setInterval(function(){displayBusSchedule();}, 60000);
+    }
+
+    function error(err) {
+      console.log("Location services failed.");
+
+      // If we cannot find the users location, just hide the services that depend on it
+      document.getElementById('temperatureDisplay').style = "display: none";
+      document.getElementById('mapsDisplay').style = "display: none";
+      document.getElementById('forecastDisplay').style = "display: none;"
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  }
+
+  function getIcon(lastBuildTime, sunset, curWeather) {
+    // console.log("Current text: " + curWeather);
+    var iconText = "wi wi-"
+
+    // IFf lastBuildTime == FORECAST, we are gettin icon for weekly forecast and therefor do not want time specific icons
+    if (lastBuildTime != "FORECAST") {
+      if (lastBuildTime.includes("AM"))
+        iconText += "day-";
+      else if (lastBuildTime.includes("PM")) {
+        // If it is in the PM, we need to check if it is after sunset
+        var i = 15;
+
+        // Loop till colon of buildTime in order to parse the build time (current Time)
+        while (lastBuildTime.charCodeAt(i) != 58) i++;
+
+        // Current build time hour is always double digit (i.e. 07:28 or 10:28). Get those digits
+        var curHour = lastBuildTime[i-2] + lastBuildTime[i-1];
+
+        // Set setHour to empty value and reset loop index
+        var setHour = "";
+        i = 0;
+
+        // Copy characters until we hit the colon
+        while (sunset.charCodeAt(i) != 58)
+          setHour += sunset[i++];
+
+        // Check if it is after sunset
+        if (parseInt(curHour) < parseInt(setHour))
+          iconText += "day-";
+        else
+          iconText += "night-alt-"
+      }
+    }
+
+    // Determine which icon to display
+    if (curWeather.includes("sunny") || curWeather.includes("hot"))
+      iconText = "wi wi-day-sunny";
+    else if (curWeather.includes("clear"))
+      iconText = "wi wi-stars";
+    else if (curWeather.includes("fair"))
+      iconText = "wi wi-day-sunny-overcast";
+    else if (curWeather.includes("cloud")) {
+      iconText += "cloudy";
+
+      if (curWeather.includes("wind") || curWeather.includes("breezy"))
+        iconText += "-windy";
+    }
+    else if (curWeather.includes("mixed"))
+      iconText += "rain-mix";
+    else if (curWeather.includes("rain"))
+      iconText += "rain";
+    else if (curWeather.includes("showers") || curWeather.includes("drizzle"))
+      iconText += "showers";
+    else if (curWeather.includes("thunderstorms"))
+      iconText += "storm-showers";
+    else if (curWeather.includes("snow"))
+      iconText += "snow";
+    else if (curWeather.includes("foggy") || curWeather.includes("haze") ||
+             curWeather.includes("dust")  || curWeather.includes("smokey"))
+      iconText += "fog";
+    else if (curWeather.includes("wind") || curWeather.includes("breezy"))
+      iconText += "windy";
+
+    // console.log("iconText: " + iconText);
+
+    return(iconText)
+
+  }
+
+  function displayWeather() {
+    var location;
+
+    // If the user has requested a custom location (entered something to overwrite their current location), set location to that
+    if (customLocation != "")
+      location = customLocation;
+    else
+      location = curLocation;
+
+    $.get("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places where text=\"(" + location + ")\") and u='c'&format=json", function (data) {})
+    .done(function(data) {
+      /* Check that a place was found (we'll just grab the first) */
+      if (data.query.results === null) {
+          console.log("Weather for " + location + "not found!");
+          document.getElementById('temperatureDisplay').style = "display: none";
+          document.getElementById('forecastDisplay').style = "display: none;"
+      } else {
+        // get weather icon
+        document.getElementById('weatherIcon').className = getIcon(data.query.results.channel.lastBuildDate, data.query.results.channel.astronomy.sunset, (data.query.results.channel.item.condition.text).toLowerCase());
+        // getIcon("Tue, 15 May 2018 09:29 PM CST", "8:54", "rain".toLowerCase());
+
+        // Set actual time weather
+        document.getElementById('currentTemp').innerHTML = data.query.results.channel.item.condition.temp + "&deg;C";
+        document.getElementById('currentTempText').innerHTML = data.query.results.channel.item.condition.text;
+        document.getElementById('currentTempRange').innerHTML = data.query.results.channel.item.forecast[0].low + "&deg;C - " + data.query.results.channel.item.forecast[0].high + "&deg;C";// : 60%";
+
+        document.getElementById('currentLocation').innerHTML = "<img src=\"otherImages/locationDrop.png\" style=\"width:10px;\"> " + data.query.results.channel.location.city + ", " + data.query.results.channel.location.region;
+
+        // Loop through forecast and change weekly forecast highs, lows and days
+        for (var i = 0; i < 6; i++) {
+          document.getElementById('day' + i + 'Icon').className += getIcon("FORCAST", "-1", (data.query.results.channel.item.forecast[i+1].text).toLowerCase());
+          document.getElementById('day' + i + 'High').innerHTML = data.query.results.channel.item.forecast[i+1].high + "&deg;C";
+          document.getElementById('day' + i + 'Low').innerHTML = data.query.results.channel.item.forecast[i+1].low + "&deg;C";
+          document.getElementById('day' + i + 'Date').innerHTML = data.query.results.channel.item.forecast[i+1].day;
+        }
+      }
+    });
+  }
+
+  function displayBusSchedule() {
+    // Important addresses
+    var home   = {lat: 43.519543, long: -80.228988};
+    var school = {lat:43.5301401, long: -80.22631060000001};
+
+    var travelMode, departureDate = new Date();
+    var distanceToHome   = Math.sqrt((curLat - home.lat)*(curLat - home.lat) + (curLong - home.long)*(curLong - home.long));
+    var distanceToSchool = Math.sqrt((curLat - school.lat)*(curLat - school.lat) + (curLong - school.long)*(curLong - school.long));
+
+    // If too far from home, set to drive
+    if (distanceToHome > 10)
+      travelMode = "driving";
+    // If close, but outside of bustimes, set to Walk
+    else if (departureDate.getHours() < "7" || (departureDate.getDay() == 0 && departureDate.getHours() > "17"))
+      travelMode = "walking";
+    // Else, we bus
+    else
+      travelMode = "transit";
+
+    $(document).ready(function() {
+      $.ajax({
+        url:'mapsData.php',
+        method:'GET',
+        data: {"curLat": curLat, "curLong": curLong, "travelMode": travelMode, "distanceToHome": distanceToHome},
+        success:function(data) {
+          try {
+           // console.log("Data: " + data);
+           var pData = JSON.parse(data);
+           // console.log("pData: " + pData);
+
+           if (pData.geocoded_waypoints[0].geocoder_status != "OK") throw "Waypoint Failed";
+
+           // If our current travel mode is to use buses
+           if (travelMode == "transit") {
+             var i = 0;
+             // Find first step that is transit
+             while ((pData.routes[0].legs[0].steps[i].travel_mode).toLowerCase() != "transit") i++;
+
+             // If a transit step was found, set the bus number/colour
+             if ((pData.routes[0].legs[0].steps[i].travel_mode).toLowerCase() == "transit"){
+               document.getElementById('busNumIcon').style = "display: visible;";
+               document.getElementById('busNumIcon').innerHTML =  pData.routes[0].legs[0].steps[i].transit_details.line.short_name;
+               document.getElementById('busNumIcon').style.backgroundColor = pData.routes[0].legs[0].steps[i].transit_details.line.color;
+             }
+
+             //Set arrival/departure Times. Only transit supports these options
+             document.getElementById('busLeaveTime').innerHTML  = pData.routes[0].legs[0].departure_time.text;
+             document.getElementById('busArriveTime').innerHTML = pData.routes[0].legs[0].arrival_time.text;
+           } else if (travelMode == "driving" || travelMode == "walking") {
+             // Get the current duration string. Create variables to find duration offset, defaulted to 0
+             var duration = pData.routes[0].legs[0].duration.text;
+             var durDays = 0, durHours = 0, durMinutes = 0;
+             var arrivalDate = new Date();
+
+             // Parse the duration string get a number, then determine time length type
+             var res = duration.split(" ");
+             for (var i = 0; i < res.length; i += 2) {
+               var timeLength = parseInt(res[i], 10);
+               var timeType   = res[i + 1];
+
+               // Determine which type we have, and set it
+               switch (timeType) {
+                 case 'day':
+                 case 'days':
+                  durDays = timeLength;
+                  break;
+                 case 'hour':
+                 case 'hours':
+                  durHours = timeLength;
+                  break;
+                 case 'minute':
+                 case 'minutes':
+                 case 'min':
+                 case 'mins':
+                  durMinutes = timeLength;
+                  break;
+                 default:
+                  console.log("Unkown time type found: " + timeType);
+               }
+             }
+
+             // Get the offset to the current date with duration time
+             arrivalDate.setDate(arrivalDate.getDate() + durDays);
+             arrivalDate.setHours(arrivalDate.getHours() + durHours);
+             arrivalDate.setMinutes(arrivalDate.getMinutes() + durMinutes);
+             console.log("Driving: " + departureDate + " -> " + arrivalDate);
+
+             // Set departure and arrival times with pretty formats
+             if (departureDate.getHours() < "10")
+               document.getElementById('busLeaveTime').innerHTML = "0";
+             document.getElementById('busLeaveTime').innerHTML += departureDate.getHours() + ":";
+
+            if (departureDate.getMinutes() < "10")
+                document.getElementById('busLeaveTime').innerHTML += "0";
+            document.getElementById('busLeaveTime').innerHTML += departureDate.getMinutes();
+
+
+             if (arrivalDate.getHours() < "10")
+               document.getElementById('busArriveTime').innerHTML = "0";
+             document.getElementById('busArriveTime').innerHTML += arrivalDate.getHours() + ":";
+
+            if (arrivalDate.getMinutes() < "10")
+                document.getElementById('busArriveTime').innerHTML += "0";
+            document.getElementById('busArriveTime').innerHTML += arrivalDate.getMinutes();
+
+             // If the drive is mutliple days long, show that
+             if (durDays > 0)
+              document.getElementById('busArriveTime').innerHTML += " +" + durDays;
+
+            // Set icon colour and text to show we're driving
+            if (travelMode == "driving")
+              document.getElementById('carIcon').style =  "display: visible;";
+            else if (travelMode == "walking")
+              document.getElementById('walkIcon').style = "display: visible;";
+            document.getElementById('carIcon').style.backgroundColor = "grey";
+           }
+
+           // Set The current address for hover over box
+           var startAddress = (pData.routes[0].legs[0].start_address).slice(0, (pData.routes[0].legs[0].start_address).indexOf(","));
+           document.getElementById('originFullText').innerHTML += startAddress;
+
+           // Check end address for nicer printing
+           //Home
+           if (distanceToHome < 0.001) {
+             document.getElementById('busOrigin').innerHTML = " Home";
+             document.getElementById('busDestination').innerHTML = "School";
+           }
+           //School
+           else if (distanceToSchool < 0.02) {
+             document.getElementById('busOrigin').innerHTML = " Shool";
+             document.getElementById('busDestination').innerHTML = "Home";
+           }
+           //Otherwise just use current address
+           else {
+             document.getElementById('busOrigin').innerHTML = " Loc";
+             document.getElementById('busDestination').innerHTML = "Home";
+           }
+          }
+          catch(err) {
+           console.log("maps error: " + err);
+           document.getElementById('mapsDisplay').style = "display: none";
+          }
+        }
+      });
+    });
+  }
+
+  function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = new Date(a[key]); var y = new Date(b[key]);
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+  }
+
+  function findCount(array, curDay) {
+    var count = 0, checkDate = new Date(array[0].dueDate);
+
+    while (checkDate.getMonth() + " " + checkDate.getDate() == curDay)
+      checkDate = new Date(array[++count].dueDate);
+
+    return count;
+  }
+
+  function displayHwCalendar() {
+    // Outlook password: jIEIXY50=rngafcKP074;@[
+    var hwList = '[' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 1", "weight":"1"},' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 2", "weight":"1"},' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 3", "weight":"1"},' +
+                // '{"type":"string", "dueDate":"' + new Date() + '", "course":"CIS 1234", "name":"Quiz 4", "weight":"1"},' +
+
+
+                  // CIS 3150 Weekly quizzes
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 17, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 1", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 24, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 2", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9,  1, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 3", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9,  8, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 4", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 15, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 5", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 22, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 6", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 29, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 7", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 5, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 8", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 12, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 9", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 19, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 10", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 26, 23, 59) + '", "course":"CIS 3150", "name":"Quiz 11", "weight":"1"},' +
+                 // CIS 3150 Assignments
+                 '{"type":"string", "dueDate":"' + new Date(2018,  8, 25, 8, 30) + '", "course":"CIS 3150", "name":"Ass 1", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018,  9, 11, 8, 30) + '", "course":"CIS 3150", "name":"Ass 2", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018,  9, 30, 8, 30) + '", "course":"CIS 3150", "name":"Ass 3", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 13, 8, 40) + '", "course":"CIS 3150", "name":"Ass 4", "weight":"5"},' +
+                 // CIS 3150 Exams
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 16, 8, 30) + '", "course":"CIS 3150", "name":"Mid", "weight":"20"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 11, 6, 8, 30) + '", "course":"CIS 3150", "name":"Exam", "weight":"45"},' +
+
+
+
+                 // SOAN 3240 weekly Quizzes
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 18, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 1", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 25, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 2", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 11, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 3", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 16, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 4", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 23, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 5", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 30, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 6", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10,  6, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 7", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 13, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 8", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 20, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 9", "weight":"2.5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 27, 10, 00) + '", "course":"SOAN 3240", "name":"Quiz 10", "weight":"2.5"},' +
+                 //SOAN 3240 Weekly Assignments
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 20, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 1", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 27, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 2", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9,  4, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 3", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 11, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 4", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 16, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 5", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 25, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 6", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 1, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 7", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 8, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 8", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 15, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 9", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 22, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 10", "weight":"1"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 29, 11, 30) + '", "course":"SOAN 3240", "name":"Ass 11", "weight":"1"},' +
+                 // SOAN 3240 Research Assignment
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 25, 11, 30) + '", "course":"SOAN 3240", "name":"RS 1", "weight":"5"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 22, 11, 30) + '", "course":"SOAN 3240", "name":"RS 2", "weight":"15"},' +
+                 // SOAN 3240 Exams
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 18, 10, 00) + '", "course":"SOAN 3240", "name":"Mid", "weight":"24"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 11, 10, 23, 59) + '", "course":"SOAN 3240", "name":"Take-home Final", "weight":"28"},' +
+
+
+
+                 // CIS 4300 quizzes
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 18, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 1", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 25, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 2", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 11, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 3", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 16, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 4", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 23, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 5", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 30, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 6", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10,  6, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 7", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 13, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 8", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 20, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 9", "weight":"4"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 27, 14, 30) + '", "course":"CIS 4300", "name":"Quiz 10", "weight":"4"},' +
+                 // CIS 4300 Weekly Labs
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 20, 14, 30) + '", "course":"CIS 4300", "name":"Lab 1", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 27, 14, 30) + '", "course":"CIS 4300", "name":"Lab 2", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9,  4, 14, 30) + '", "course":"CIS 4300", "name":"Lab 3", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 11, 14, 30) + '", "course":"CIS 4300", "name":"Lab 4", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 18, 14, 30) + '", "course":"CIS 4300", "name":"Lab 5", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 25, 14, 30) + '", "course":"CIS 4300", "name":"Lab 6", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 1, 14, 30) + '", "course":"CIS 4300", "name":"Lab 7", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 8, 14, 30) + '", "course":"CIS 4300", "name":"Lab 8", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 15, 14, 30) + '", "course":"CIS 4300", "name":"Lab 9", "weight":"3"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 22, 14, 30) + '", "course":"CIS 4300", "name":"Lab 10", "weight":"3"},' +
+                 // CIS 4300 Exams
+                 '{"type":"string", "dueDate":"' + new Date(2018, 11, 10, 8, 30) + '", "course":"CIS 4300", "name":"Final", "weight":"30"},' +
+
+
+
+                 // CIS 3750 Assignments
+                 '{"type":"string", "dueDate":"' + new Date(2018, 8, 17, 12, 00) + '", "course":"CIS 3750", "name":"Ass 1", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9,  1, 12, 00) + '", "course":"CIS 3750", "name":"Ass 2", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 15, 12, 00) + '", "course":"CIS 3750", "name":"Ass 3", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 5, 12, 00) + '", "course":"CIS 3750", "name":"Ass 4", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 19, 12, 00) + '", "course":"CIS 3750", "name":"Ass 5", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 10, 28, 12, 00) + '", "course":"CIS 3750", "name":"Demo", "weight":"20"},' +
+                 // CIS 3750 Exams
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 4, 12, 00) + '", "course":"CIS 3750", "name":"Mid 1", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 9, 25, 12, 00) + '", "course":"CIS 3750", "name":"Mid 2", "weight":"10"},' +
+                 '{"type":"string", "dueDate":"' + new Date(2018, 11, 3, 8, 30) + '", "course":"CIS 3750", "name":"Final", "weight":"20"}' +
+
+                 // '] }';
+                 ']';
+    var sortList = sortByKey(JSON.parse(hwList), "dueDate");
+    var today = new Date(), weekDays = new Array("Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat");
+    var curDay, curCount = 0, index = 0, dateOffset = 0;
+
+    // Increment through the sorted list to find the first homework item that matches todays date, or the next one
+    do {
+      curDay = new Date(sortList[++index].dueDate);
+    } while (curDay.getMonth() < today.getMonth() || curDay.getDate() < today.getDate());
+
+    // Remove all past homework items
+    sortList = sortList.slice(index);
+
+    // Set the next 6 days dates on screen
+    do {
+      // Incrementally get each day of the next week (Next 6 days after today)
+      var nextDate = new Date(today.getTime() + (dateOffset + 1) * 24 * 60 * 60 * 1000);
+      document.getElementById('hwDay' + (dateOffset + 1) + 'Date').innerHTML = weekDays[nextDate.getDay()];
+    } while (++dateOffset < 6)
+
+    index = 0;
+    // If curDay matches today's date, we need to set todays homework values
+    if (today.getMonth() + " " + today.getDate() == curDay.getMonth() + " " + curDay.getDate()) {
+      // Find today's homework count
+      curCount = findCount(sortList, today.getMonth() + " " + today.getDate());
+
+      // Set all the homework items
+      do {
+        document.getElementById('hwday0Item' + index).innerHTML = sortList[index].course + " " + sortList[index].name + " - " + sortList[index].weight + "%<br>";
+      } while (++index < curCount);
+
+      // Check if we have an odd amount of items today, if so finish the Row
+      if (curCount % 2 == 1)
+        document.getElementById('hwday0Item' + index).innerHTML = "<br>";
+
+      sortList = sortList.slice(curCount);
+      curDay = new Date(sortList[0].dueDate);
+    }
+
+    // Find the offset and count of the first day with homework, we need to do this first to check if we even have homework due this week
+    dateOffset = curDay.getDate() - today.getDate();
+    curCount = findCount(sortList, curDay.getMonth() + " " + curDay.getDate());
+
+    // Loop till we're more than a week ahead of todays date, adding any days that have homework items
+    while (dateOffset < 7) {
+      // Set the current count of homework items
+      document.getElementById('day' + dateOffset + 'Count').innerHTML = curCount;
+
+      // Add all items to the hover over text box
+      index = 0;
+      do {
+        document.getElementById('day' + dateOffset + 'Calendar').innerHTML += sortList[index].course + " " + sortList[index].name + " - " + sortList[index].weight + "%<br>";
+        } while (++index < curCount);
+
+      // Remove used homework items
+      sortList = sortList.slice(curCount);
+
+      // set curDay to the next day with homework items and find the count for that day
+      curDay = new Date(sortList[0].dueDate);
+      curCount = findCount(sortList, curDay.getMonth() + " " + curDay.getDate());
+
+      // Find the offset from today to the next homework item
+      dateOffset = curDay.getDate() - today.getDate();
+    }
+  }
+</script>
